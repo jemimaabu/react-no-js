@@ -1,0 +1,39 @@
+/* ============================ THEME SWITCHER =============================
+   React side: context provider + state + effect drive a `themed-${theme}`
+   class on each card.
+   CSS side: a single <input type="checkbox"> + `.css-theme-root:has(...)`
+   restyles every descendant card. No JS, no re-renders.
+   ======================================================================== */
+
+.themed-card {
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 12px;
+  border: 1px solid;
+  transition: background-color .25s, color .25s, border-color .25s;
+}
+.themed-card h4 { margin: 0 0 4px; }
+.themed-card p { margin: 4px 0; }
+
+.themed-light { background: #fff; color: #111; border-color: #e5e7eb; }
+.themed-dark  { background: #0f172a; color: #e2e8f0; border-color: #1e293b; }
+
+/* The CSS-only theme — the whole point of the demo. */
+.css-theme-root { display: block; }
+.css-theme-root .switch {
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.css-theme-root .switch input { accent-color: var(--accent); }
+.css-theme-root .theme-name::before { content: "light"; }
+
+/* The magic line: ancestor reacts to a checked descendant. */
+.css-theme-root:has(#theme-switcher:checked) .themed-card {
+  background: #0f172a;
+  color: #e2e8f0;
+  border-color: #1e293b;
+}
+.css-theme-root:has(#theme-switcher:checked) .theme-name::before { content: "dark"; }
+
+.support-note--has {
+  @supports selector(:has(*)) { display: none; }
+}

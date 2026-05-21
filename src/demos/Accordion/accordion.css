@@ -1,0 +1,54 @@
+/* ============================== ACCORDION ===============================
+   Used by both implementations: shared structural rules + the demo header
+   "Exclusive" toggle that appears in each pane's header.
+   ======================================================================== */
+
+.exclusive-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: var(--muted);
+  cursor: pointer;
+  user-select: none;
+}
+.exclusive-toggle input { accent-color: var(--accent); }
+.pane > header .exclusive-toggle { margin: 0 0 0 auto; font-size: 12px; }
+
+.accordion {
+  display: grid;
+  gap: 8px;
+}
+.accordion-item {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--panel-2);
+}
+.accordion-trigger {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  padding: 12px 14px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-weight: 600;
+  text-align: left;
+}
+.accordion-trigger:hover { background: rgba(255, 255, 255, 0.03); }
+.accordion-panel { padding: 0 14px 14px; color: var(--muted); }
+.accordion-panel p { margin: 0; }
+
+.accordion .chev { transition: transform .2s ease; }
+.accordion-item.open .chev,
+.accordion-item[open] .chev { transform: rotate(180deg); }
+
+/* Native <details>: kill default disclosure marker so we can use our own. */
+details.accordion-item summary { list-style: none; cursor: pointer; }
+details.accordion-item summary::-webkit-details-marker { display: none; }
+
+/* Progressive-enhancement notice for browsers without interpolate-size. */
+@supports (interpolate-size: allow-keywords) {
+  .support-note--interpolate-size { display: none; }
+}

@@ -1,0 +1,61 @@
+/* ================================= MODAL =================================
+   React side: a hand-built portal + backdrop + fade/pop @keyframes.
+   CSS side: a single [popover] element. The browser handles top-layer,
+   ::backdrop, focus, Esc and (for popover="auto") light-dismiss.
+   ======================================================================== */
+
+/* ------ React modal ------ */
+.r-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, .55);
+  display: grid; place-items: center;
+  z-index: 1000;
+  animation: fade .15s ease both;
+}
+.r-modal {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px;
+  max-width: 420px;
+  box-shadow: var(--shadow);
+  animation: pop .18s ease both;
+}
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pop  { from { opacity: 0; transform: translateY(8px) scale(.98); } }
+
+/* ------ Native popover ------ */
+.native-popover {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px;
+  max-width: 420px;
+  box-shadow: var(--shadow);
+  inset: 0;
+  margin: auto;
+}
+.native-popover::backdrop { background: rgba(0, 0, 0, .55); backdrop-filter: blur(2px); }
+.native-popover h4 { margin-top: 0; }
+
+/* Discrete-property animation: animate display + overlay so the popover
+   fades in and out instead of snapping. Only applied where the browser
+   supports `transition-behavior: allow-discrete`. */
+@supports (transition-behavior: allow-discrete) {
+  .native-popover,
+  .native-popover::backdrop {
+    transition: opacity .18s ease, display .18s allow-discrete, overlay .18s allow-discrete;
+    opacity: 1;
+  }
+  .native-popover:not(:popover-open),
+  .native-popover:not(:popover-open)::backdrop { opacity: 0; }
+  @starting-style {
+    .native-popover:popover-open,
+    .native-popover:popover-open::backdrop { opacity: 0; }
+  }
+}
+
+@supports (transition-behavior: allow-discrete) {
+  .support-note--dialog-anim { display: none; }
+}

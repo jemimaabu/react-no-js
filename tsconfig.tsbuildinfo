@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/components/demosplit.tsx","./src/components/globalthemeswitch.tsx","./src/demos/accordiondemo.tsx","./src/demos/carouseldemo.tsx","./src/demos/modaldemo.tsx","./src/demos/scrolldemo.tsx","./src/demos/themeswitcherdemo.tsx","./src/perf/perfpanel.tsx"],"version":"5.9.3"}

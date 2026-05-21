@@ -1,0 +1,210 @@
+/* =========================== CUSTOMIZABLE SELECT =========================
+   React side: a hand-rolled combobox with state, keyboard handling, outside-
+   click and scrollIntoView.
+   CSS side: native <select> with `appearance: base-select`, `<button>` and
+   `<selectedcontent>` parts, `::picker(select)`, and a staggered open
+   animation driven by `sibling-index()`.
+   ======================================================================== */
+
+/* ------ React-side custom combobox ------ */
+.react-select { position: relative; display: inline-block; min-width: 240px; }
+.react-select__button {
+  width: 100%;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.react-select__button:hover { border-color: color-mix(in srgb, var(--accent) 60%, var(--border)); }
+.react-select__value {
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 24px;
+}
+.react-select__value img { border-radius: 4px; }
+.react-select__placeholder { color: var(--muted); }
+.react-select .arrow {
+  width: 0; height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid var(--muted);
+}
+.react-select__listbox {
+  position: absolute;
+  inset-inline: 0;
+  top: calc(100% + 6px);
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  z-index: 10;
+  display: grid;
+  gap: 2px;
+}
+.react-select__option {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--text);
+}
+.react-select__option img { border-radius: 4px; }
+.react-select__option.is-active,
+.react-select__option.is-selected {
+  background: color-mix(in srgb, var(--bg, var(--accent)) 90%, transparent);
+  color: #0f172a;
+}
+.react-select__check { margin-left: auto; font-weight: 700; }
+
+/* ------ CSS-side native customizable select ------ */
+.css-select-root { display: grid; gap: 12px; }
+
+select.base-select {
+  padding: 8px 16px;
+  border-radius: 8px;
+  min-width: 240px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  font: inherit;
+  field-sizing: content;
+}
+
+select.base-select,
+select.base-select::picker(select) {
+  field-sizing: content;
+  appearance: base-select;
+}
+
+select.base-select::picker(select) {
+  margin-block: 0.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  padding: 6px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+selectedcontent {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.base-select .arrow {
+  width: 0; height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid var(--muted);
+  margin-left: 8px;
+}
+
+.base-select > button {
+  display: inline-flex; align-items: center; gap: 8px;
+  width: 100%;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  padding: 0;
+  text-align: left;
+  justify-content: space-between;
+}
+
+.base-select option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-block: 8px;
+  padding-inline: 12px 16px;
+  border-radius: 8px;
+  color: var(--text);
+
+  /* Staggered slide-in via sibling-index() — no JS needed. */
+  transition:
+    opacity 0.25s ease,
+    translate 0.5s ease;
+  transition-delay: calc(0.05s * (sibling-index() - 2));
+
+  @starting-style {
+    opacity: 0;
+    translate: 30px 0;
+  }
+}
+
+.base-select option img { border-radius: 4px; }
+.base-select option::checkmark { display: none; }
+select.base-select::picker-icon { display: none; }
+
+.base-select option:first-of-type {
+  transition: none;
+  color: var(--muted);
+  @starting-style {
+    opacity: 0;
+    translate: 0 0;
+  }
+}
+
+.base-select:has(option:checked:not(:disabled)) option {
+  transition: none;
+}
+
+.base-select option[data-bg-color]:hover,
+.base-select option[data-bg-color]:focus,
+.base-select option[data-bg-color]:checked {
+  background-color: color-mix(
+    in srgb,
+    attr(data-bg-color type(<color>)) 90%,
+    transparent
+  );
+  color: #0f172a;
+}
+
+.base-select option:not(:disabled):checked::after {
+  content: "✓";
+  margin-left: auto;
+}
+
+/* Demo header toggle: flip the select back to UA appearance for comparison. */
+.css-select-toggle {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  width: max-content;
+  color: var(--muted);
+  font-size: 13px;
+
+  @supports (appearance: base-select) {
+    display: inline-flex;
+  }
+}
+.css-select-toggle code {
+  background: var(--panel-2);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--text);
+}
+
+.css-pane:has(#toggle-select:checked) select.base-select {
+  appearance: auto;
+}
+.css-pane:has(#toggle-select:checked) select.base-select::picker(select) {
+  appearance: auto;
+}
+.pane > header .css-select-toggle { margin: 0 0 0 auto; }
+
+@supports (appearance: base-select) {
+  .support-note--base-select { display: none; }
+}

@@ -1,0 +1,74 @@
+/* ============================ SCROLL ANIMATIONS ==========================
+   React side: IntersectionObserver toggles a class per item, so the entry
+   transition runs on the main thread.
+   CSS side: animation-timeline: view() ties the same animation directly to
+   scroll position and runs off the main thread.
+   ======================================================================== */
+
+.scroll-track {
+  height: 320px;
+  overflow-y: auto;
+  display: grid;
+  gap: 14px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel-2);
+  scroll-behavior: smooth;
+}
+.scroll-card {
+  padding: 18px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  min-height: 120px;
+}
+
+/* React variant: state-driven, transition between .out and .in classes. */
+.r-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+.r-scroll.in { opacity: 1; transform: none; }
+
+/* CSS variant: animation tied to viewport position. */
+@supports (animation-timeline: view()) {
+  .css-scroll {
+    animation: rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(30px) scale(.96); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* "Simulate busy main thread" toggle in the React pane header — used to
+   make the JS-driven side stutter on demand while the CSS side stays smooth. */
+.perf-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--muted);
+  cursor: pointer;
+  user-select: none;
+}
+.perf-toggle input { margin: 0; cursor: pointer; }
+.perf-toggle.is-busy {
+  color: #fca5a5;
+  font-weight: 600;
+}
+.perf-toggle.is-busy::after {
+  content: '🔥';
+  animation: busy-pulse 1s steps(2) infinite;
+}
+@keyframes busy-pulse { 50% { opacity: .3; } }
+.pane > header .perf-toggle { margin: 0 0 0 auto; }
+
+@supports (animation-timeline: view()) {
+  .support-note--scroll-timeline { display: none; }
+}
