@@ -18,6 +18,11 @@ export function CssModal() {
           Close
         </button>
       </div>
+      <aside className="support-note support-note--dialog-anim">
+        ⚠️ Your browser does not yet support the Popover API with{' '}
+        <code>@starting-style</code> and discrete-property transitions. Try
+        again in Chrome 117+ or Safari 17+.
+      </aside>
     </>
   );
 }

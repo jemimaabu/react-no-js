@@ -39,6 +39,10 @@ export function CssAccordion({ exclusive }: { exclusive: boolean }) {
           </details>
         ))}
       </div>
+      <aside className="support-note support-note--interpolate-size">
+        ⚠️ Your browser does not yet support animating to <code>auto</code> height
+        via <code>interpolate-size</code>. Try again in Chrome 129+.
+      </aside>
     </div>
   );
 }

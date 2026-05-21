@@ -34,6 +34,3 @@
 }
 .css-theme-root:has(#theme-switcher:checked) .theme-name::before { content: "dark"; }
 
-.support-note--has {
-  @supports selector(:has(*)) { display: none; }
-}

@@ -54,6 +54,11 @@ export function CssPokemonSelect() {
           </option>
         ))}
       </select>
+
+      <aside className="support-note support-note--base-select">
+        ⚠️ Your browser does not yet support customizable select. Try again in
+        Chrome 135+.
+      </aside>
     </div>
   );
 }

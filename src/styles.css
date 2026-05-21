@@ -380,8 +380,8 @@ code { background: rgba(255, 255, 255, 0.06); padding: 0 .35em; border-radius: 4
 
 /* =========================== support notes ===============================
    Each CSS-side demo renders <aside class="support-note support-note--X">.
-   The feature-specific @supports rule that hides each one lives in the
-   demo's own stylesheet; here we keep just the shared base appearance.
+   The base appearance + the per-feature @supports rules that hide each note
+   all live here so per-demo stylesheets can't override them via load order.
    ======================================================================== */
 
 .support-note {
@@ -398,4 +398,26 @@ code { background: rgba(255, 255, 255, 0.06); padding: 0 .35em; border-radius: 4
 .support-note code {
   background: rgba(245, 158, 11, .18);
   color: inherit;
+}
+
+@supports (interpolate-size: allow-keywords) {
+  .support-note--interpolate-size { display: none; }
+}
+@supports (animation-timeline: view()) {
+  .support-note--scroll-timeline { display: none; }
+}
+@supports (transition-behavior: allow-discrete) {
+  .support-note--dialog-anim { display: none; }
+}
+@supports (appearance: base-select) {
+  .support-note--base-select { display: none; }
+}
+@supports (scroll-marker-group: after) {
+  .support-note--scroll-buttons { display: none; }
+}
+@supports (scroll-snap-type: x mandatory) {
+  .support-note--scroll-snap { display: none; }
+}
+@supports selector(:has(*)) {
+  .support-note--has { display: none; }
 }

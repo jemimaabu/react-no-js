@@ -15,6 +15,10 @@ export function CssScroll() {
           </p>
         </div>
       ))}
+      <aside className="support-note support-note--scroll-timeline">
+        ⚠️ Your browser does not yet support scroll-driven animations
+        (<code>animation-timeline: view()</code>). Try again in Chrome 115+.
+      </aside>
     </div>
   );
 }

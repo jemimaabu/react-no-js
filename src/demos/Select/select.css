@@ -205,6 +205,3 @@ select.base-select::picker-icon { display: none; }
 }
 .pane > header .css-select-toggle { margin: 0 0 0 auto; }
 
-@supports (appearance: base-select) {
-  .support-note--base-select { display: none; }
-}

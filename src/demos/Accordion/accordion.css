@@ -48,7 +48,3 @@
 details.accordion-item summary { list-style: none; cursor: pointer; }
 details.accordion-item summary::-webkit-details-marker { display: none; }
 
-/* Progressive-enhancement notice for browsers without interpolate-size. */
-@supports (interpolate-size: allow-keywords) {
-  .support-note--interpolate-size { display: none; }
-}

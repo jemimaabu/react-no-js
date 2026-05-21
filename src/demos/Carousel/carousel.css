@@ -136,9 +136,3 @@
   background: var(--accent);
 }
 
-.support-note--scroll-buttons {
-  @supports (scroll-marker-group: after) { display: none; }
-}
-.support-note--scroll-snap {
-  @supports (scroll-snap-type: x mandatory) { display: none; }
-}

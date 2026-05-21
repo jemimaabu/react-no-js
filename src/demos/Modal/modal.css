@@ -56,6 +56,3 @@
   }
 }
 
-@supports (transition-behavior: allow-discrete) {
-  .support-note--dialog-anim { display: none; }
-}
